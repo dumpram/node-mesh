@@ -10,9 +10,8 @@ typedef struct node_t {
 } node_t;
 
 typedef struct probe_t {
-    int id;
+    int parent_id;
     int rssi;
-    char accept;
 } probe_t;
 
 typedef enum node_state_t {
@@ -22,6 +21,7 @@ typedef enum node_state_t {
 
 typedef struct config_data_t {
     int children_number;
+    int start_number;
     int highest_start_number;
     int resync_interval;
     node_t children[MAX_CHILDREN_NUMBER]; // fix this

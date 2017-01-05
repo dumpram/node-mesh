@@ -7,13 +7,21 @@ void node_wait_for_start();
 void node_wait_data();
 void node_add_data();
 void node_propagate_data();
+void node_propagate_config_data();
 void node_sleep_until_next_interval();
+void node_create_new_config_data();
 
 static node_state_t current_state = SYNC_STATE;
 static node_data_t node_data;
 static node_data_t temp_data;
+static config_data_t temp_config_data;
 static config_data_t config_data;
+
+
 static node_t this;
+static probe_t out;
+
+static bool probe_table[MAX_CHILDREN_NUMBER];
 
 static int resync_counter = 0;
 
@@ -36,6 +44,7 @@ void node_loop() {
 }
 
 void node_configuration() {
+    get_probed(&out);
     get_config_data(&config_data);
     node_propagate_config_data();
     get_config_ack();
@@ -64,10 +73,23 @@ void node_propagate_config_data() {
     // probe nodes from list
     // create new config data
     // for every child node send config data
+    int i, start_number_cnt = 0;
+    for (i = 0; i < config_data.children_number; i++) {
+        probe_table[i] = probe(config_data.children[i].id);
+    }
+    node_create_new_config_data();
+
+    for (i = 0; i < config_data.children_number; i++) {
+        if (probe_table[i]) {
+            temp_config_data.start_number
+                = this.start_number + (++start_number_cnt);
+            set_config_data(&config_data.children[i], &temp_config_data);
+        }
+    }
 }
 
 void node_propagate_data() {
-    
+
 }
 
 void node_add_data() {
@@ -84,4 +106,15 @@ void node_add_data() {
 void node_sleep_until_next_interval() {
     // this should set status of node to be ok so when the rtc timer interrupt
     // occurs when next interval is imminent it knows that everything went fine
+}
+
+void node_create_new_config_data() {
+    int i;
+    for (i = 0; i < config_data.children_number; i++) {
+        if (!probe_table[i]) {
+            temp_config_data.children[temp_config_data.children_number++]
+                = config_data.children[i];
+            temp_config_data.resync_interval = config_data.resync_interval;
+        }
+    }
 }
