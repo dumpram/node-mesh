@@ -10,6 +10,9 @@ void node_propagate_data();
 void node_propagate_config_data();
 void node_sleep_until_next_interval();
 void node_create_new_config_data();
+void node_ammend_this();
+void node_get_config_ack();
+void node_set_config_ack();
 
 static node_state_t current_state = SYNC_STATE;
 static node_data_t node_data;
@@ -46,8 +49,10 @@ void node_loop() {
 void node_configuration() {
     get_probed(&out);
     get_config_data(&config_data);
+    node_ammend_this();
     node_propagate_config_data();
-    get_config_ack();
+    node_get_config_ack();
+    node_set_config_ack();
 }
 
 void node_wait_data() {
@@ -117,4 +122,21 @@ void node_create_new_config_data() {
             temp_config_data.resync_interval = config_data.resync_interval;
         }
     }
+}
+
+void node_get_config_ack() {
+
+}
+
+void node_set_config_ack() {
+    
+}
+
+void node_ammend_this() {
+    this.start_number = config_data.start_number;
+    this.id = get_nrf_id();
+}
+
+void node_wait_for_start() {
+    get_start_beacon(&config_data);
 }
