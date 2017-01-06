@@ -55,6 +55,7 @@ void node_loop() {
             resync_counter = 0;
         }
         if (current_state == SYNC_STATE) {
+            node_init();
             node_configuration();
             node_wait_for_start();
             node_propagate_start();
@@ -63,6 +64,8 @@ void node_loop() {
         } else  if (current_state == NORMAL_STATE) {
             node_wait_data();
             node_propagate_data();
+            node_data = node_data_empty;
+            temp_data = node_data_empty;
             resync_counter++;
         }
         node_sleep_until_next_interval();
@@ -110,7 +113,6 @@ void node_propagate_config_data() {
         probe_table[i] = probe(config_data.children[i].id);
     }
     node_create_new_config_data();
-
     for (i = 0; i < config_data.children_number; i++) {
         if (probe_table[i]) {
             temp_config_data.start_number
