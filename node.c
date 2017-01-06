@@ -15,7 +15,7 @@ void node_get_config_ack();
 void node_set_config_ack();
 void node_propagate_start();
 
-static node_state_t current_state = SYNC_STATE;
+
 static node_data_t node_data;
 static node_data_t temp_data;
 static config_data_t temp_config_data;
@@ -31,6 +31,7 @@ static bool probe_table[MAX_CHILDREN_NUMBER];
 static int resync_counter = 0;
 
 node_status_t node_status;
+node_state_t current_state = SYNC_STATE;
 
 void node_init() {
     current_state = SYNC_STATE;
@@ -57,13 +58,14 @@ void node_loop() {
             node_configuration();
             node_wait_for_start();
             node_propagate_start();
-        }
-        if (current_state == NORMAL_STATE) {
+            clock_monotonic_reset();
+            current_state = NORMAL_STATE;
+        } else  if (current_state == NORMAL_STATE) {
             node_wait_data();
             node_propagate_data();
             resync_counter++;
-            node_sleep_until_next_interval();
         }
+        node_sleep_until_next_interval();
     }
 }
 
@@ -136,8 +138,8 @@ void node_add_data() {
 void node_sleep_until_next_interval() {
     // this should set status of node to be ok so when the rtc timer interrupt
     // occurs when next interval is imminent it knows that everything went fine
-
     node_status = OK_STATUS;
+    sleep_until_next_interval();
 }
 
 void node_create_new_config_data() {

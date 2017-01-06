@@ -5,6 +5,8 @@
 
 #include "node.h"
 
+extern node_status_t node_status;
+extern node_state_t node_state;
 
 #define CONFIG_ACK_MAGIC    0xdeadbeef
 #define START_BEACON_MAGIC  0xfeedbabe
@@ -60,6 +62,14 @@ int  get_my_packet_data();
  * @param ncount
  */
 void sleep_for(int ncount);
+/**
+ * Sleep until monotonic(RTC) clock interrupt doesn't occur.
+ */
+void sleep_until_next_interval();
+/**
+ * Reset RTC counter to zero.
+ */
+void clock_monotonic_reset();
 /**
  * Wait for config acknowledge and fill all elements of structure.
  * @param from [description]
