@@ -43,9 +43,16 @@ int  get_my_packet_data();
  */
 void sleep_for(int ncount);
 /**
- * Not sure yet.
+ * Wait for config acknowledge and fill all elements of structure.
+ * @param from [description]
  */
-void get_config_ack();
+void get_config_ack(config_ack_t *config_ack);
+/**
+ * Sets config acknowledge of parent node.
+ * @param config_ack contains id of current node
+ * @param to id of parent node
+ */
+void set_config_ack(node_t *to, config_ack_t *config_ack);
 /**
  * Return true if probe is successful.
  * @param  id target node base address

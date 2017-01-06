@@ -21,6 +21,7 @@ static node_data_t node_data;
 static node_data_t temp_data;
 static config_data_t temp_config_data;
 static config_data_t config_data;
+static config_ack_t config_ack;
 
 
 static node_t this;
@@ -129,11 +130,33 @@ void node_create_new_config_data() {
 }
 
 void node_get_config_ack() {
-
+    int max_start_number = this.start_number, successfully_configured = 0, i;
+    int real_children_number =
+        config_data.children_number - temp_config_data.children_number;
+    int config_ack_cnt = 0;
+    while (config_ack_cnt < real_children_number) {
+        get_config_ack(&config_ack);
+        for (i = 0; i < config_data.children_number; i++) {
+            if (probe_table[i]) {
+                if (config_data.children[i].id == config_ack.from) {
+                    if (config_ack.highest_start_number > max_start_number) {
+                        max_start_number = config_ack.highest_start_number;
+                    }
+                    successfully_configured +=
+                        config_ack.successfully_configured;
+                    config_ack_cnt++;
+                    break;
+                }
+            }
+        }
+    }
+    config_ack.from = this.id;
+    config_ack.successfully_configured = successfully_configured;
+    config_ack.highest_start_number = max_start_number;
 }
 
 void node_set_config_ack() {
-
+    set_config_ack(&parent, &config_ack);
 }
 
 void node_ammend_this() {
