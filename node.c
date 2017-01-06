@@ -11,8 +11,10 @@ void node_propagate_config_data();
 void node_sleep_until_next_interval();
 void node_create_new_config_data();
 void node_ammend_this();
+void node_ammend_parent();
 void node_get_config_ack();
 void node_set_config_ack();
+
 
 static node_state_t current_state = SYNC_STATE;
 static node_data_t node_data;
@@ -23,6 +25,7 @@ static config_data_t config_data;
 
 static node_t this;
 static probe_t out;
+static node_t parent;
 
 static bool probe_table[MAX_CHILDREN_NUMBER];
 
@@ -48,7 +51,8 @@ void node_loop() {
 
 void node_configuration() {
     get_probed(&out);
-    get_config_data(&config_data);
+    node_ammend_parent();
+    get_config_data(&parent, &config_data);
     node_ammend_this();
     node_propagate_config_data();
     node_get_config_ack();
@@ -66,7 +70,7 @@ void node_wait_data() {
         sleep_for(next_sleep);
         sleep_acc += next_sleep;
         // data retrieval
-        get_node_data(&temp_data);
+        get_node_data(&config_data.children[i], &temp_data);
         // data_appending
         node_add_data();
     }
@@ -129,7 +133,7 @@ void node_get_config_ack() {
 }
 
 void node_set_config_ack() {
-    
+
 }
 
 void node_ammend_this() {
@@ -137,6 +141,10 @@ void node_ammend_this() {
     this.id = get_nrf_id();
 }
 
+void node_ammend_parent() {
+    parent.id = out.parent_id;
+}
+
 void node_wait_for_start() {
-    get_start_beacon(&config_data);
+    get_start_beacon(&parent, &config_data);
 }

@@ -21,17 +21,17 @@ int get_nrf_id();
  *
  * @param data pointer to config data structure to fill.
  */
-void get_config_data(config_data_t *data);
+void get_config_data(node_t *from, config_data_t *data);
 /**
  * Gets node_data from air. It is blocking.
  * @param data data structure to fill
  */
-void get_node_data(node_data_t *data);
+void get_node_data(node_t *from, node_data_t *data);
 /**
  * Should amend highest_start_number in given data structure.
  * @param data
  */
-void get_start_beacon(config_data_t *data);
+void get_start_beacon(node_t *from, config_data_t *data);
 /**
  * Sensor reading or custom data for one node.
  * @return value of sensor
@@ -52,7 +52,6 @@ void get_config_ack();
  * @return    [description]
  */
 bool probe(int id);
-
 /**
  * Wait until probe flag is received. Should save probe id and rssi in out.
  * Change channel to config channel.
@@ -60,7 +59,6 @@ bool probe(int id);
  */
 void get_probed(probe_t *out);
 
-
-void set_config_data(node_t *node, config_data_t *config_data);
+void set_config_data(node_t *to, config_data_t *config_data);
 
 #endif /* end of include guard: RADIO_PLATFORM_H */
