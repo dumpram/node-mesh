@@ -28,10 +28,16 @@ void get_config_data(node_t *from, config_data_t *data);
  */
 void get_node_data(node_t *from, node_data_t *data);
 /**
- * Should amend highest_start_number in given data structure.
+ * Should ammend highest_start_number in given data structure.
  * @param data
  */
 void get_start_beacon(node_t *from, config_data_t *data);
+/**
+ * Sets start to node given.
+ * @param to   target node
+ * @param data send only highest start number from structure
+ */
+void set_start_beacon(node_t *to, config_data_t *data);
 /**
  * Sensor reading or custom data for one node.
  * @return value of sensor
@@ -49,7 +55,7 @@ void sleep_for(int ncount);
 void get_config_ack(config_ack_t *config_ack);
 /**
  * Sets config acknowledge of parent node.
- * @param config_ack contains id of current node
+ * @param config_ack
  * @param to id of parent node
  */
 void set_config_ack(node_t *to, config_ack_t *config_ack);

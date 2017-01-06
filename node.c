@@ -14,6 +14,7 @@ void node_ammend_this();
 void node_ammend_parent();
 void node_get_config_ack();
 void node_set_config_ack();
+void node_propagate_start();
 
 
 static node_state_t current_state = SYNC_STATE;
@@ -41,6 +42,7 @@ void node_loop() {
     if (current_state == SYNC_STATE) {
         node_configuration();
         node_wait_for_start();
+        node_propagate_start();
     }
     if (current_state == NORMAL_STATE) {
         node_wait_data();
@@ -170,4 +172,13 @@ void node_ammend_parent() {
 
 void node_wait_for_start() {
     get_start_beacon(&parent, &config_data);
+}
+
+void node_propagate_start() {
+    int i;
+    for (i = 0; i < config_data.children_number; i++) {
+        if (probe_table[i]) {
+            set_start_beacon(&config_data.children[i], &config_data);
+        }
+    }
 }
