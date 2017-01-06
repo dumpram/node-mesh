@@ -1,7 +1,6 @@
 #include "radio-platform.h"
 #include "node.h"
 
-
 void node_configuration();
 void node_wait_for_start();
 void node_wait_data();
@@ -16,14 +15,12 @@ void node_get_config_ack();
 void node_set_config_ack();
 void node_propagate_start();
 
-
 static node_state_t current_state = SYNC_STATE;
 static node_data_t node_data;
 static node_data_t temp_data;
 static config_data_t temp_config_data;
 static config_data_t config_data;
 static config_ack_t config_ack;
-
 
 static node_t this;
 static probe_t out;
@@ -33,22 +30,40 @@ static bool probe_table[MAX_CHILDREN_NUMBER];
 
 static int resync_counter = 0;
 
+node_status_t node_status;
+
+void node_init() {
+    current_state = SYNC_STATE;
+    node_data = node_data_empty;
+    temp_data = node_data_empty;
+    temp_config_data = config_data_empty;
+    config_data = config_data_empty;
+    config_ack = config_ack_empty;
+    int i;
+    for (i = 0; i < MAX_CHILDREN_NUMBER; i++) {
+        probe_table[i] = false;
+    }
+    resync_counter = 0;
+}
 
 void node_loop() {
-    if (resync_counter == config_data.resync_interval) {
-        current_state = SYNC_STATE;
-        resync_counter = 0;
-    }
-    if (current_state == SYNC_STATE) {
-        node_configuration();
-        node_wait_for_start();
-        node_propagate_start();
-    }
-    if (current_state == NORMAL_STATE) {
-        node_wait_data();
-        node_propagate_data();
-        resync_counter++;
-        node_sleep_until_next_interval();
+    while(1) {
+        node_status = TIMEOUT_STATUS;
+        if (resync_counter == config_data.resync_interval) {
+            current_state = SYNC_STATE;
+            resync_counter = 0;
+        }
+        if (current_state == SYNC_STATE) {
+            node_configuration();
+            node_wait_for_start();
+            node_propagate_start();
+        }
+        if (current_state == NORMAL_STATE) {
+            node_wait_data();
+            node_propagate_data();
+            resync_counter++;
+            node_sleep_until_next_interval();
+        }
     }
 }
 
@@ -67,15 +82,18 @@ void node_wait_data() {
     // add my data
     node_data.packets[node_data.data_length++].data = get_my_packet_data();
     for (i = 0; i < config_data.children_number; i++) {
-        current_start_number = config_data.children[i].start_number;
-        next_sleep = config_data.highest_start_number - current_start_number;
-        next_sleep -= sleep_acc;
-        sleep_for(next_sleep);
-        sleep_acc += next_sleep;
-        // data retrieval
-        get_node_data(&config_data.children[i], &temp_data);
-        // data_appending
-        node_add_data();
+        if (probe_table[i]) {
+            current_start_number = config_data.children[i].start_number;
+            next_sleep = config_data.highest_start_number -
+                current_start_number;
+            next_sleep -= sleep_acc;
+            sleep_for(next_sleep);
+            sleep_acc += next_sleep;
+            // data retrieval
+            get_node_data(&config_data.children[i], &temp_data);
+            // data_appending
+            node_add_data();
+        }
     }
     // sleep until your time has come
     sleep_for(config_data.highest_start_number - this.start_number);
@@ -101,7 +119,7 @@ void node_propagate_config_data() {
 }
 
 void node_propagate_data() {
-
+    set_node_data(&parent, &node_data);
 }
 
 void node_add_data() {
@@ -118,6 +136,8 @@ void node_add_data() {
 void node_sleep_until_next_interval() {
     // this should set status of node to be ok so when the rtc timer interrupt
     // occurs when next interval is imminent it knows that everything went fine
+
+    node_status = OK_STATUS;
 }
 
 void node_create_new_config_data() {

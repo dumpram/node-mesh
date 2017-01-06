@@ -21,6 +21,11 @@ typedef enum node_state_t {
     SYNC_STATE
 } node_state_t;
 
+typedef enum node_status_t {
+    OK_STATUS,
+    TIMEOUT_STATUS
+} node_status_t;
+
 typedef struct config_data_t {
     int children_number;
     int start_number;
@@ -44,5 +49,11 @@ typedef struct node_data_t {
     int data_length;
     node_packet_t packets[MAX_PACKET_NUMBER];
 } node_data_t;
+
+static const node_t node_empty;
+static const probe_t probe_empty;
+static const config_data_t config_data_empty;
+static const config_ack_t config_ack_empty;
+static const node_data_t node_data_empty;
 
 #endif /* end of include guard: NODE_H */

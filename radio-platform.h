@@ -23,10 +23,22 @@ int get_nrf_id();
  */
 void get_config_data(node_t *from, config_data_t *data);
 /**
- * Gets node_data from air. It is blocking.
+ * Sets config data to children node. Doesn't have to send highest_start_number.
+ * @param to          children node
+ * @param config_data config data to send
+ */
+void set_config_data(node_t *to, config_data_t *config_data);
+/**
+ * Gets node_data from child. It is blocking.
  * @param data data structure to fill
  */
 void get_node_data(node_t *from, node_data_t *data);
+/**
+ * Sends node data to parent.
+ * @param to   parent parameters
+ * @param data data
+ */
+void set_node_data(node_t *to, node_data_t *data);
 /**
  * Should ammend highest_start_number in given data structure.
  * @param data
@@ -72,6 +84,5 @@ bool probe(int id);
  */
 void get_probed(probe_t *out);
 
-void set_config_data(node_t *to, config_data_t *config_data);
 
 #endif /* end of include guard: RADIO_PLATFORM_H */
