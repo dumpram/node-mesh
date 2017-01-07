@@ -6,6 +6,8 @@
 
 #define SET_CONFIG_ACK_RETRY_MAX 100
 
+#define NODE_GATEWAY
+
 typedef struct node_t {
     int start_number;
     int id;
@@ -55,5 +57,21 @@ static const probe_t probe_empty;
 static const config_data_t config_data_empty;
 static const config_ack_t config_ack_empty;
 static const node_data_t node_data_empty;
+
+#ifdef NODE_GATEWAY
+static const config_data_t config_data_gateway = {
+    .children_number = 5,
+    .highest_start_number = 0,
+    .resync_interval = 10,
+    .start_number = 0,
+    .children = {
+        {.start_number = 0, .id = 1},
+        {.start_number = 0, .id = 1},
+        {.start_number = 0, .id = 1},
+        {.start_number = 0, .id = 1},
+        {.start_number = 0, .id = 1}
+    }
+};
+#endif
 
 #endif /* end of include guard: NODE_H */

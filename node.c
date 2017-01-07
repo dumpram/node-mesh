@@ -38,7 +38,11 @@ void node_init() {
     node_data = node_data_empty;
     temp_data = node_data_empty;
     temp_config_data = config_data_empty;
+#ifndef NODE_GATEWAY
     config_data = config_data_empty;
+#else
+    config_data = config_data_gateway;
+#endif
     config_ack = config_ack_empty;
     int i;
     for (i = 0; i < MAX_CHILDREN_NUMBER; i++) {
@@ -57,7 +61,9 @@ void node_loop() {
         if (current_state == SYNC_STATE) {
             node_init();
             node_configuration();
+#ifndef NODE_GATEWAY
             node_wait_for_start();
+#endif
             node_propagate_start();
             clock_monotonic_reset();
             current_state = NORMAL_STATE;
@@ -72,14 +78,20 @@ void node_loop() {
     }
 }
 
+
 void node_configuration() {
+
+#ifndef NODE_GATEWAY
     get_probed(&out);
     node_ammend_parent();
     get_config_data(&parent, &config_data);
     node_ammend_this();
+#endif
     node_propagate_config_data();
     node_get_config_ack();
+#ifndef NODE_GATEWAY
     node_set_config_ack();
+#endif
 }
 
 void node_wait_data() {
@@ -123,7 +135,9 @@ void node_propagate_config_data() {
 }
 
 void node_propagate_data() {
+#ifndef NODE_GATEWAY
     set_node_data(&parent, &node_data);
+#endif
 }
 
 void node_add_data() {
