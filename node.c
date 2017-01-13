@@ -1,5 +1,6 @@
 #include "radio-platform.h"
 #include "node.h"
+#include "node-radio.h"
 
 void node_configuration();
 void node_wait_for_start();
@@ -107,7 +108,7 @@ void node_wait_data() {
             sleep_for(next_sleep);
             sleep_acc += next_sleep;
             // data retrieval
-            get_node_data(&config_data.children[i], &temp_data);
+            node_radio_get_data(&config_data.children[i], &temp_data);
             // data_appending
             node_add_data();
         }
@@ -136,7 +137,7 @@ void node_propagate_config_data() {
 
 void node_propagate_data() {
 #ifndef NODE_GATEWAY
-    set_node_data(&parent, &node_data);
+    node_radio_set_data(&parent, &node_data);
 #endif
 }
 

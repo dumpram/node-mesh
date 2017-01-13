@@ -34,13 +34,13 @@ void set_config_data(node_t *to, config_data_t *config_data);
  * Gets node_data from child. It is blocking.
  * @param data data structure to fill
  */
-void get_node_data(node_t *from, node_data_t *data);
+void get_node_data(unsigned char *data);
 /**
  * Sends node data to parent.
  * @param to   parent parameters
  * @param data data
  */
-void set_node_data(node_t *to, node_data_t *data);
+void set_node_data(unsigned char *data);
 /**
  * Should ammend highest_start_number in given data structure.
  * @param data
