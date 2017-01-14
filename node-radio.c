@@ -77,4 +77,7 @@ int main() {
     node_radio_get_data(&from, &recv_data);
 
 
+    node_loop();
+
+
 }
