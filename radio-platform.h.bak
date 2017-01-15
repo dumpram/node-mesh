@@ -32,7 +32,7 @@ extern node_state_t node_state;
 																X.crc                    = NRF_ESB_CRC_16BIT;                \
 																X.tx_output_power        = NRF_ESB_TX_POWER_0DBM;            \
 																X.retransmit_delay       = 300;                              \
-																X.retransmit_count       = 50;                                \
+																X.retransmit_count       = 5;                                \
 																X.tx_mode                = NRF_ESB_TXMODE_AUTO;              \
 																X.radio_irq_priority     = 1;                                \
 																X.event_irq_priority     = 2;                                \
@@ -47,7 +47,7 @@ extern node_state_t node_state;
 																X.crc                    = NRF_ESB_CRC_16BIT;                \
 																X.tx_output_power        = NRF_ESB_TX_POWER_0DBM;            \
 																X.retransmit_delay       = 300;                              \
-																X.retransmit_count       = 50;                                \
+																X.retransmit_count       = 5;                                \
 																X.tx_mode                = NRF_ESB_TXMODE_AUTO;              \
 																X.radio_irq_priority     = 1;                                \
 																X.event_irq_priority     = 2;                                \
@@ -92,8 +92,6 @@ extern node_state_t node_state;
 #define	ESB_CONFIG_CH				75
 
 #define CONFIG_ACK_MAGIC    0xdeadbeef
-#define DATA_ACK_MAGIC		0xboob5000
-#define DATA_END_MAGIC		0xb16b00b5
 #define START_BEACON_MAGIC  0xfeedbabe
 #define PROBE_MAGIC         0x900df00d
 
@@ -108,20 +106,15 @@ extern node_state_t node_state;
 #define CONFIG_RSSI_MIN		-100	//accept packets with any RSSI
 #define CONFIG_PREFIX		0x87
 
-#define DATA_RSSI_MIN		-100	//accept packets with any RSSI
-#define DATA_PREFIX			0x45
-
-
-
 #define	MINI_TIMESLICE	(1000*1000) //1 sekunda
 
 
 
 
 #define	UINT32_TO_UINT8_ARRAY(addr,id) do{	addr[0] =(uint8_t)( id & 0x000000FF);\
-										addr[1] =(uint8_t)(( id & 0x0000FF00)>>8);\
-										addr[2] =(uint8_t)(( id & 0x00FF0000)>>16);\
-										addr[3] =(uint8_t)(( id & 0xFF000000)>>24);}while(0);
+																						addr[1] =(uint8_t)(( id & 0x0000FF00)>>8);\
+																						addr[2] =(uint8_t)(( id & 0x00FF0000)>>16);\
+																						addr[3] =(uint8_t)(( id & 0xFF000000)>>24);}while(0);
 
 						
 																							
@@ -149,13 +142,13 @@ void set_config_data(node_t *to, config_data_t *config_data);
  * Gets node_data from child. It is blocking.
  * @param data data structure to fill
  */
-void get_node_data(unsigned char *data, int* len);
+void get_node_data(unsigned char *data, int len);
 /**
  * Sends node data to parent.
  * @param to   parent parameters
  * @param data data
  */
-void set_node_data(node_t *to, unsigned char *data, int len);
+void set_node_data(unsigned char *data, int len);
 /**
  * Should ammend highest_start_number in given data structure.
  * @param data

@@ -1,0 +1,13 @@
+.\objects\system_nrf51.o: Lib\components\toolchain\system_nrf51.c
+.\objects\system_nrf51.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\system_nrf51.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\system_nrf51.o: .\Lib\components\device\nrf.h
+.\objects\system_nrf51.o: .\Lib\components\device\nrf51.h
+.\objects\system_nrf51.o: C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\core_cm0.h
+.\objects\system_nrf51.o: C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_compiler.h
+.\objects\system_nrf51.o: C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_armcc.h
+.\objects\system_nrf51.o: C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_DeviceFamilyPack\8.11.1\Device\Include\system_nrf51.h
+.\objects\system_nrf51.o: .\Lib\components\device\nrf51_bitfields.h
+.\objects\system_nrf51.o: .\Lib\components\device\nrf51_deprecated.h
+.\objects\system_nrf51.o: .\Lib\components\device\compiler_abstraction.h
+.\objects\system_nrf51.o: Lib\components\toolchain\system_nrf51.h

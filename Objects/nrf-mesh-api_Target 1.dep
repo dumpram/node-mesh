@@ -1,0 +1,107 @@
+Dependencies for Project 'nrf-mesh-api', Target 'Target 1': (DO NOT MODIFY !)
+F (.\main_mesh_V2.c)(0x587BEDD0)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\ -I .\Lib\components\proprietary_rf\esb -I .\Lib\components\device-ID:\Mega\(3)SUS\GIT_mesh_pavic\nrf-mesh-keil\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_DeviceFamilyPack\8.11.1\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DNRF51 -DNRF51 -DNRF51822-o .\objects\main_mesh_v2.o --omf_browse .\objects\main_mesh_v2.crf --depend .\objects\main_mesh_v2.d)
+I (main_mesh_V2.h)(0x587BC939)
+I (C:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x57F66928)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F66928)
+I (.\Lib\components\device\nrf51.h)(0x583C92B3)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\core_cm0.h)(0x58259C4E)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F66928)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_compiler.h)(0x58259C4E)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_armcc.h)(0x58259C4E)
+I (C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_DeviceFamilyPack\8.11.1\Device\Include\system_nrf51.h)(0x582F1198)
+I (.\Lib\components\device\nrf51_bitfields.h)(0x5852F7D5)
+I (.\Lib\components\proprietary_rf\esb\nrf_esb.h)(0x586F14A7)
+I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x57F66928)
+I (.\Lib\components\device\nrf.h)(0x583C92B3)
+I (.\Lib\components\device\nrf51_deprecated.h)(0x583C92B3)
+I (.\Lib\components\device\compiler_abstraction.h)(0x583C92B3)
+I (my_nrf_error.h)(0x5852EE5C)
+I (ringbuf.h)(0x5791F916)
+I (radio-platform.h)(0x587BEB9F)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F66928)
+I (node.h)(0x587BDCA3)
+F (.\main_mesh_V2.h)(0x587BC939)()
+F (.\ESB_lib_precompiled.lib)(0x5852F016)()
+F (.\Lib\components\toolchain\system_nrf51.c)(0x583C92B3)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\ -I .\Lib\components\proprietary_rf\esb -I .\Lib\components\device-ID:\Mega\(3)SUS\GIT_mesh_pavic\nrf-mesh-keil\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_DeviceFamilyPack\8.11.1\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DNRF51 -DNRF51 -DNRF51822-o .\objects\system_nrf51.o --omf_browse .\objects\system_nrf51.crf --depend .\objects\system_nrf51.d)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F66928)
+I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x57F66928)
+I (.\Lib\components\device\nrf.h)(0x583C92B3)
+I (.\Lib\components\device\nrf51.h)(0x583C92B3)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\core_cm0.h)(0x58259C4E)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_compiler.h)(0x58259C4E)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_armcc.h)(0x58259C4E)
+I (C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_DeviceFamilyPack\8.11.1\Device\Include\system_nrf51.h)(0x582F1198)
+I (.\Lib\components\device\nrf51_bitfields.h)(0x5852F7D5)
+I (.\Lib\components\device\nrf51_deprecated.h)(0x583C92B3)
+I (.\Lib\components\device\compiler_abstraction.h)(0x583C92B3)
+I (Lib\components\toolchain\system_nrf51.h)(0x583C92B3)
+F (.\Lib\components\toolchain\system_nrf51.h)(0x583C92B3)()
+F (.\Lib\components\toolchain\arm\arm_startup_nrf51.s)(0x5852F2E2)(--cpu Cortex-M0 -g --apcs=interwork --pd "__MICROLIB SETA 1"-ID:\Mega\(3)SUS\GIT_mesh_pavic\nrf-mesh-keil\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_DeviceFamilyPack\8.11.1\Device\Include--pd "__UVISION_VERSION SETA 522" --pd "_RTE_ SETA 1" --pd "NRF51 SETA 1" --pd "NRF51 SETA 1" --pd "NRF51822 SETA 1"--list .\listings\arm_startup_nrf51.lst --xref -o .\objects\arm_startup_nrf51.o --depend .\objects\arm_startup_nrf51.d)
+F (.\ringbuf.c)(0x5852F9E8)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\ -I .\Lib\components\proprietary_rf\esb -I .\Lib\components\device-ID:\Mega\(3)SUS\GIT_mesh_pavic\nrf-mesh-keil\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_DeviceFamilyPack\8.11.1\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DNRF51 -DNRF51 -DNRF51822-o .\objects\ringbuf.o --omf_browse .\objects\ringbuf.crf --depend .\objects\ringbuf.d)
+I (ringbuf.h)(0x5791F916)
+I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x57F66928)
+I (.\Lib\components\device\nrf51.h)(0x583C92B3)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\core_cm0.h)(0x58259C4E)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F66928)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_compiler.h)(0x58259C4E)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_armcc.h)(0x58259C4E)
+I (C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_DeviceFamilyPack\8.11.1\Device\Include\system_nrf51.h)(0x582F1198)
+F (.\ringbuf.h)(0x5791F916)()
+F (.\node.c)(0x587BC0DA)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\ -I .\Lib\components\proprietary_rf\esb -I .\Lib\components\device-ID:\Mega\(3)SUS\GIT_mesh_pavic\nrf-mesh-keil\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_DeviceFamilyPack\8.11.1\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DNRF51 -DNRF51 -DNRF51822-o .\objects\node.o --omf_browse .\objects\node.crf --depend .\objects\node.d)
+I (radio-platform.h)(0x587BEB9F)
+I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x57F66928)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F66928)
+I (node.h)(0x587BDCA3)
+I (.\Lib\components\proprietary_rf\esb\nrf_esb.h)(0x586F14A7)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F66928)
+I (.\Lib\components\device\nrf.h)(0x583C92B3)
+I (.\Lib\components\device\nrf51.h)(0x583C92B3)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\core_cm0.h)(0x58259C4E)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_compiler.h)(0x58259C4E)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_armcc.h)(0x58259C4E)
+I (C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_DeviceFamilyPack\8.11.1\Device\Include\system_nrf51.h)(0x582F1198)
+I (.\Lib\components\device\nrf51_bitfields.h)(0x5852F7D5)
+I (.\Lib\components\device\nrf51_deprecated.h)(0x583C92B3)
+I (.\Lib\components\device\compiler_abstraction.h)(0x583C92B3)
+I (my_nrf_error.h)(0x5852EE5C)
+I (ringbuf.h)(0x5791F916)
+I (node-radio.h)(0x587A3ECE)
+F (.\node.h)(0x587BDCA3)()
+F (.\radio-platform.c)(0x587BEDC4)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\ -I .\Lib\components\proprietary_rf\esb -I .\Lib\components\device-ID:\Mega\(3)SUS\GIT_mesh_pavic\nrf-mesh-keil\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_DeviceFamilyPack\8.11.1\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DNRF51 -DNRF51 -DNRF51822-o .\objects\radio-platform.o --omf_browse .\objects\radio-platform.crf --depend .\objects\radio-platform.d)
+I (radio-platform.h)(0x587BEB9F)
+I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x57F66928)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F66928)
+I (node.h)(0x587BDCA3)
+I (.\Lib\components\proprietary_rf\esb\nrf_esb.h)(0x586F14A7)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F66928)
+I (.\Lib\components\device\nrf.h)(0x583C92B3)
+I (.\Lib\components\device\nrf51.h)(0x583C92B3)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\core_cm0.h)(0x58259C4E)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_compiler.h)(0x58259C4E)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_armcc.h)(0x58259C4E)
+I (C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_DeviceFamilyPack\8.11.1\Device\Include\system_nrf51.h)(0x582F1198)
+I (.\Lib\components\device\nrf51_bitfields.h)(0x5852F7D5)
+I (.\Lib\components\device\nrf51_deprecated.h)(0x583C92B3)
+I (.\Lib\components\device\compiler_abstraction.h)(0x583C92B3)
+I (my_nrf_error.h)(0x5852EE5C)
+I (ringbuf.h)(0x5791F916)
+F (.\radio-platform.h)(0x587BEB9F)()
+F (.\node-radio.c)(0x587BC150)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\ -I .\Lib\components\proprietary_rf\esb -I .\Lib\components\device-ID:\Mega\(3)SUS\GIT_mesh_pavic\nrf-mesh-keil\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_DeviceFamilyPack\8.11.1\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DNRF51 -DNRF51 -DNRF51822-o .\objects\node-radio.o --omf_browse .\objects\node-radio.crf --depend .\objects\node-radio.d)
+I (radio-platform.h)(0x587BEB9F)
+I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x57F66928)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F66928)
+I (node.h)(0x587BDCA3)
+I (.\Lib\components\proprietary_rf\esb\nrf_esb.h)(0x586F14A7)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F66928)
+I (.\Lib\components\device\nrf.h)(0x583C92B3)
+I (.\Lib\components\device\nrf51.h)(0x583C92B3)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\core_cm0.h)(0x58259C4E)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_compiler.h)(0x58259C4E)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_armcc.h)(0x58259C4E)
+I (C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_DeviceFamilyPack\8.11.1\Device\Include\system_nrf51.h)(0x582F1198)
+I (.\Lib\components\device\nrf51_bitfields.h)(0x5852F7D5)
+I (.\Lib\components\device\nrf51_deprecated.h)(0x583C92B3)
+I (.\Lib\components\device\compiler_abstraction.h)(0x583C92B3)
+I (my_nrf_error.h)(0x5852EE5C)
+I (ringbuf.h)(0x5791F916)
+F (.\node-radio.h)(0x587A3ECE)()

@@ -1,0 +1,13 @@
+--cpu Cortex-M0
+".\objects\main_mesh_v2.o"
+".\ESB_lib_precompiled.lib"
+".\objects\system_nrf51.o"
+".\objects\arm_startup_nrf51.o"
+".\objects\ringbuf.o"
+".\objects\node.o"
+".\objects\radio-platform.o"
+".\objects\node-radio.o"
+--library_type=microlib --strict --scatter ".\Objects\nrf-mesh-api.sct"
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Listings\nrf-mesh-api.map" -o .\Objects\nrf-mesh-api.axf

@@ -2,19 +2,19 @@
 #include "node.h"
 #include "node-radio.h"
 
-void node_configuration(void);
-void node_wait_for_start(void);
-void node_wait_data(void);
-void node_add_data(void);
-void node_propagate_data(void);
-void node_propagate_config_data(void);
-void node_sleep_until_next_interval(void);
-void node_create_new_config_data(void);
-void node_ammend_this(void);
-void node_ammend_parent(void);
-void node_get_config_ack(void);
-void node_set_config_ack(void);
-void node_propagate_start(void);
+void node_configuration();
+void node_wait_for_start();
+void node_wait_data();
+void node_add_data();
+void node_propagate_data();
+void node_propagate_config_data();
+void node_sleep_until_next_interval();
+void node_create_new_config_data();
+void node_ammend_this();
+void node_ammend_parent();
+void node_get_config_ack();
+void node_set_config_ack();
+void node_propagate_start();
 
 
 static node_data_t node_data;

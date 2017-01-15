@@ -56,28 +56,28 @@ void node_radio_get_data(node_t *from, node_data_t *data) {
 }
 
 
-//int main() {
-//    node_t to = {
-//        .id = 1,
-//        .start_number = 0
-//    };
+int main() {
+    node_t to = {
+        .id = 1,
+        .start_number = 0
+    };
 
-//    node_data_t data = {
-//        .data_length = 2,
-//        .packets = {
-//            {.id = 0xdeadbeef, .data = 0xAAAAAAAA},
-//            {.id = 0xdeadbeef, .data = 0xFFFFFFFF}
-//        }
-//    };
+    node_data_t data = {
+        .data_length = 2,
+        .packets = {
+            {.id = 0xdeadbeef, .data = 0xAAAAAAAA},
+            {.id = 0xdeadbeef, .data = 0xFFFFFFFF}
+        }
+    };
 
-//    node_t from;
-//    node_data_t recv_data;
+    node_t from;
+    node_data_t recv_data;
 
-//    node_radio_set_data(&to, &data);
-//    node_radio_get_data(&from, &recv_data);
-
-
-//    node_loop();
+    node_radio_set_data(&to, &data);
+    node_radio_get_data(&from, &recv_data);
 
 
-//}
+    node_loop();
+
+
+}
