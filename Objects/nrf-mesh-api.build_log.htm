@@ -21,7 +21,7 @@ Target DLL:      Segger\JL2CM3.dll V2.99.23.0
 Dialog DLL:      TARMCM1.DLL V1.11.0.0
  
 <h2>Project:</h2>
-D:\Mega\(3)SUS\GIT_mesh_pavic\nrf-mesh-keil\nrf-mesh-api.uvprojx
+D:\Mega\(3)SUS\GIT_mesh_pavic\node-mesh-novi\node-mesh\nrf-mesh-api.uvprojx
 Project File Date:  01/15/2017
 
 <h2>Output:</h2>
@@ -29,26 +29,28 @@ Project File Date:  01/15/2017
 Rebuild target 'Target 1'
 assembling arm_startup_nrf51.s...
 compiling ringbuf.c...
+compiling system_nrf51.c...
 compiling node-radio.c...
 node-radio.c(44): warning:  #177-D: variable "tmp"  was declared but never referenced
       int cnt = 0, i = 0, tmp;
 node-radio.c: 1 warning, 0 errors
-compiling system_nrf51.c...
 compiling node.c...
 compiling main_mesh_V2.c...
-main_mesh_V2.c(98): warning:  #167-D: argument of type "unsigned char *" is incompatible with parameter of type "char *restrict"
-  		temp_cnt = sprintf(&temp_buff[4], "Temp: %d C \r\n",get_my_packet_data());
-main_mesh_V2.c: 1 warning, 0 errors
+main_mesh_V2.c(100): warning:  #167-D: argument of type "unsigned char *" is incompatible with parameter of type "char *restrict"
+  		temp_cnt = sprintf(&temp_buff[4], "ID: %X \t Temperatura: %d C \r\n",get_nrf_id(), temp_data);
+main_mesh_V2.c(74): warning:  #177-D: variable "i"  was declared but never referenced
+  	int i, temp_data;
+main_mesh_V2.c: 2 warnings, 0 errors
 compiling radio-platform.c...
-radio-platform.c(519): warning:  #177-D: variable "base_addr"  was declared but never referenced
+radio-platform.c(523): warning:  #177-D: variable "base_addr"  was declared but never referenced
   	uint8_t base_addr[4];
-radio-platform.c(520): warning:  #177-D: variable "temp_addr"  was declared but never referenced
+radio-platform.c(524): warning:  #177-D: variable "temp_addr"  was declared but never referenced
   	uint32_t temp_addr;
 radio-platform.c: 2 warnings, 0 errors
 linking...
-Program Size: Code=9008 RO-data=244 RW-data=92 ZI-data=5716  
+Program Size: Code=9076 RO-data=244 RW-data=92 ZI-data=5716  
 FromELF: creating hex file...
-".\Objects\nrf-mesh-api.axf" - 0 Error(s), 4 Warning(s).
+".\Objects\nrf-mesh-api.axf" - 0 Error(s), 5 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -59,7 +61,7 @@ Package Vendor: ARM
    * Component: CORE Version: 5.0.0
 
 <h2>Collection of Component include folders:</h2>
-  D:\Mega\(3)SUS\GIT_mesh_pavic\nrf-mesh-keil\RTE\_Target_1
+  D:\Mega\(3)SUS\GIT_mesh_pavic\node-mesh-novi\node-mesh\RTE\_Target_1
   C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include
   C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_DeviceFamilyPack\8.11.1\Device\Include
 
