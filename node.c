@@ -217,7 +217,8 @@ void node_propagate_start() {
     int i;
     for (i = 0; i < config_data.children_number; i++) {
         if (probe_table[i]) {
-            node_radio_set_start_beacon(&config_data.children[i], &config_data);
+            node_radio_set_start_beacon(&this, &config_data.children[i],
+                &config_data);
         }
     }
 }

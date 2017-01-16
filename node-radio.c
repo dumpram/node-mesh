@@ -52,17 +52,33 @@ void node_radio_get_data(node_t *from, node_data_t *data) {
 }
 
 void node_radio_set_config_ack(node_t *to, config_ack_t *ack) {
-
+    int cnt = 0;
+    int_to_byte_array(ack->from, &cnt, output_buffer);
+    int_to_byte_array(ack->highest_start_number, &cnt, output_buffer);
+    int_to_byte_array(ack->successfully_configured, &cnt, output_buffer);
+    set_node_data(to, output_buffer, cnt);
 }
 
 void node_radio_get_config_ack(config_ack_t *ack) {
-
+    int cnt = 0, len, i;
+    get_node_data(input_buffer, &len);
+    byte_array_to_int(input_buffer, &cnt, ack->from);
+    byte_array_to_int(input_buffer, &cnt, ack->highest_start_number);
+    byte_array_to_int(input_buffer, &cnt, ack->successfully_configured);
 }
 
-void node_radio_set_start_beacon(node_t *to, config_data_t *data) {
-
+void node_radio_set_start_beacon(node_t *from, node_t *to,
+                                            config_data_t *data) {
+    int cnt = 0;
+    int_to_byte_array(from->id, &cnt, output_buffer);
+    int_to_byte_array(data->highest_start_number, &cnt, output_buffer);
+    set_node_data(to, output_buffer, cnt);
 }
 
 void node_radio_get_start_beacon(node_t *from, config_data_t *data) {
-
+    int cnt = 0, len;
+    int recv_id;
+    get_node_data(input_buffer, &len);
+    byte_array_to_int(input_buffer, &cnt, &recv_id);
+    byte_array_to_int(input_buffer, &cnt, data->highest_start_number);
 }
