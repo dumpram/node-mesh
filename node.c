@@ -137,7 +137,7 @@ void node_propagate_config_data() {
 
 void node_propagate_data() {
 #ifndef NODE_GATEWAY
-    node_radio_set_data(&parent, &node_data);
+    node_radio_set_data(&this, &parent, &node_data);
 #endif
 }
 
@@ -176,7 +176,7 @@ void node_get_config_ack() {
         config_data.children_number - temp_config_data.children_number;
     int config_ack_cnt = 0;
     while (config_ack_cnt < real_children_number) {
-        get_config_ack(&config_ack);
+        node_radio_get_config_ack(&config_ack);
         for (i = 0; i < config_data.children_number; i++) {
             if (probe_table[i]) {
                 if (config_data.children[i].id == config_ack.from) {
@@ -197,7 +197,7 @@ void node_get_config_ack() {
 }
 
 void node_set_config_ack() {
-    set_config_ack(&parent, &config_ack);
+    node_radio_set_config_ack(&parent, &config_ack);
 }
 
 void node_ammend_this() {
@@ -210,14 +210,14 @@ void node_ammend_parent() {
 }
 
 void node_wait_for_start() {
-    get_start_beacon(&parent, &config_data);
+    node_radio_get_start_beacon(&parent, &config_data);
 }
 
 void node_propagate_start() {
     int i;
     for (i = 0; i < config_data.children_number; i++) {
         if (probe_table[i]) {
-            set_start_beacon(&config_data.children[i], &config_data);
+            node_radio_set_start_beacon(&config_data.children[i], &config_data);
         }
     }
 }

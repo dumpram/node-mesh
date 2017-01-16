@@ -1,8 +1,6 @@
 #include "radio-platform.h"
 #include "node.h"
 
-//#include <memory.h>
-
 #define MAX_BUFFER_SIZE 100
 
 static unsigned char output_buffer[MAX_BUFFER_SIZE];
@@ -27,23 +25,22 @@ void byte_array_to_int(unsigned char *array, int *start, int *i) {
     *i |= array[(*start)++] << 0;
 }
 
-void node_radio_set_data(node_t *to, node_data_t *data) {
+void node_radio_set_data(node_t *from, node_t *to, node_data_t *data) {
     int cnt = 0, i;
-    int_to_byte_array(to->id, &cnt, output_buffer);
+    int_to_byte_array(from->id, &cnt, output_buffer);
     int_to_byte_array(data->data_length, &cnt, output_buffer);
     for (i = 0; i < data->data_length; i++) {
         int_to_byte_array(data->packets[i].id, &cnt, output_buffer);
         int_to_byte_array(data->packets[i].data, &cnt, output_buffer);
     }
-    // simulating sending of data
-    //set_node_data(output_buffer);
-    memcpy(input_buffer, output_buffer, MAX_BUFFER_SIZE);
+    // send data
+    set_node_data(to, output_buffer, cnt);
 }
 
 void node_radio_get_data(node_t *from, node_data_t *data) {
-    int cnt = 0, i = 0, tmp;
+    int cnt = 0, i = 0, tmp, len;
     // here is retrieval of data
-    //get_node_data(input_buffer);
+    get_node_data(input_buffer, &len);
     byte_array_to_int(input_buffer, &cnt, &i);
     from->id = i;
     byte_array_to_int(input_buffer, &cnt, &i);
@@ -52,32 +49,20 @@ void node_radio_get_data(node_t *from, node_data_t *data) {
         byte_array_to_int(input_buffer, &cnt, &(data->packets[i].id));
         byte_array_to_int(input_buffer, &cnt, &(data->packets[i].data));
     }
+}
+
+void node_radio_set_config_ack(node_t *to, config_ack_t *ack) {
 
 }
 
+void node_radio_get_config_ack(config_ack_t *ack) {
 
-//int main() {
-//    node_t to = {
-//        .id = 1,
-//        .start_number = 0
-//    };
+}
 
-//    node_data_t data = {
-//        .data_length = 2,
-//        .packets = {
-//            {.id = 0xdeadbeef, .data = 0xAAAAAAAA},
-//            {.id = 0xdeadbeef, .data = 0xFFFFFFFF}
-//        }
-//    };
+void node_radio_set_start_beacon(node_t *to, config_data_t *data) {
 
-//    node_t from;
-//    node_data_t recv_data;
+}
 
-//    node_radio_set_data(&to, &data);
-//    node_radio_get_data(&from, &recv_data);
+void node_radio_get_start_beacon(node_t *from, config_data_t *data) {
 
-
-//    node_loop();
-
-
-//}
+}
