@@ -83,30 +83,33 @@ int main(void){
 	RTC_Init();
 	Timer0_Init();
 	
-	parent.id = 0xe287a6a4;
-	temp_node.id = 0x05364061;
+	//parent.id = 0xe287a6a4;
+	//temp_node.id = 0x05364061;
 	dbg_print("Init finished! ID: %#X\r\n", get_nrf_id());
 
-	while(1){
-		
-		sleep_until_next_interval();
-#if 0
-		get_node_data(temp_buff, &temp_cnt);
-		for(i=0; i<temp_cnt; i++) dbg_print("%c", temp_buff[i]);
-		dbg_print("Length: %d\r\n", temp_cnt);
-#else		
-		memcpy(temp_buff, &parent.id, 4);
-		temp_data = get_my_packet_data();
-		temp_cnt = sprintf(&temp_buff[4], "ID: %X \t Temperatura: %d C \r\n",get_nrf_id(), temp_data);
-		TIC;
-		set_node_data(&temp_node, (uint8_t *)temp_buff, temp_cnt+4);
-		clock_monotonic_reset();
-		TOC;
-		dbg_print("Poslano: %d bytea\r\n", temp_cnt+8);
-#endif
-		
-		
-	}
+//	while(1){
+//		
+//		sleep_until_next_interval();
+//#if 0
+//		get_node_data(temp_buff, &temp_cnt);
+//		for(i=0; i<temp_cnt; i++) dbg_print("%c", temp_buff[i]);
+//		dbg_print("Length: %d\r\n", temp_cnt);
+//#else		
+//		memcpy(temp_buff, &parent.id, 4);
+//		temp_data = get_my_packet_data();
+//		temp_cnt = sprintf(&temp_buff[4], "ID: %X \t Temperatura: %d C \r\n",get_nrf_id(), temp_data);
+//		TIC;
+//		set_node_data(&temp_node, (uint8_t *)temp_buff, temp_cnt+4);
+//		clock_monotonic_reset();
+//		TOC;
+//		dbg_print("Poslano: %d bytea\r\n", temp_cnt+8);
+//#endif
+//		
+//		
+//	}
+
+
+	node_loop();
 }	
 
 

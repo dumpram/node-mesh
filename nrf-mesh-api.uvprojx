@@ -460,14 +460,14 @@
               <FilePath>.\radio-platform.h</FilePath>
             </File>
             <File>
-              <FileName>node-radio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\node-radio.c</FilePath>
-            </File>
-            <File>
               <FileName>node-radio.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\node-radio.h</FilePath>
+            </File>
+            <File>
+              <FileName>node-radio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\node-radio.c</FilePath>
             </File>
           </Files>
         </Group>

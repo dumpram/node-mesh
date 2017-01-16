@@ -16,6 +16,7 @@ void node_get_config_ack(void);
 void node_set_config_ack(void);
 void node_propagate_start(void);
 
+extern void dbg_print(const char  *ucFormat, ...);
 
 static node_data_t node_data;
 static node_data_t temp_data;
@@ -55,7 +56,7 @@ void node_init() {
 void node_loop() {
     while(1) {
         node_status = TIMEOUT_STATUS;
-        if (resync_counter == config_data.resync_interval) {
+			if (resync_counter == config_data.resync_interval) {
             current_state = SYNC_STATE;
             resync_counter = 0;
         }
@@ -88,10 +89,13 @@ void node_configuration() {
     get_config_data(&parent, &config_data);
     node_ammend_this();
 #endif
+		dbg_print("Started propagating config data...\r\n");
     node_propagate_config_data();
     node_get_config_ack();
 #ifndef NODE_GATEWAY
     node_set_config_ack();
+#else
+		dbg_print("Got config ack...\r\n");
 #endif
 }
 
@@ -99,7 +103,7 @@ void node_wait_data() {
     int i, sleep_acc = 0, next_sleep, current_start_number;
     // add my data
     node_data.packets[node_data.data_length++].data = get_my_packet_data();
-    for (i = 0; i < config_data.children_number; i++) {
+		for (i = config_data.children_number - 1; i >= 0; i--) {
         if (probe_table[i]) {
             current_start_number = config_data.children[i].start_number;
             next_sleep = config_data.highest_start_number -
@@ -124,6 +128,9 @@ void node_propagate_config_data() {
     int i, start_number_cnt = 0;
     for (i = 0; i < config_data.children_number; i++) {
         probe_table[i] = probe(config_data.children[i].id);
+				if (probe_table[i]) {
+					dbg_print("Probe successful\r\n");
+				}
     }
     node_create_new_config_data();
     for (i = 0; i < config_data.children_number; i++) {
@@ -131,13 +138,16 @@ void node_propagate_config_data() {
             temp_config_data.start_number
                 = this.start_number + (++start_number_cnt);
             set_config_data(&config_data.children[i], &temp_config_data);
+						dbg_print("Propagating config data successful\r\n");
         }
     }
 }
 
 void node_propagate_data() {
 #ifndef NODE_GATEWAY
-    node_radio_set_data(&this, &parent, &node_data);
+    node_radio_set_data(&parent, &this, &node_data);
+#else
+	  dbg_print("Got data...\r\n");
 #endif
 }
 
@@ -157,6 +167,7 @@ void node_sleep_until_next_interval() {
     // occurs when next interval is imminent it knows that everything went fine
     node_status = OK_STATUS;
     sleep_until_next_interval();
+	  dbg_print("I woke up!\r\n");
 }
 
 void node_create_new_config_data() {
@@ -165,18 +176,20 @@ void node_create_new_config_data() {
         if (!probe_table[i]) {
             temp_config_data.children[temp_config_data.children_number++]
                 = config_data.children[i];
-            temp_config_data.resync_interval = config_data.resync_interval;
         }
     }
+		temp_config_data.resync_interval = config_data.resync_interval;
 }
 
 void node_get_config_ack() {
-    int max_start_number = this.start_number, successfully_configured = 0, i;
+    int max_start_number = config_data.start_number, successfully_configured = 0, i;
     int real_children_number =
         config_data.children_number - temp_config_data.children_number;
     int config_ack_cnt = 0;
     while (config_ack_cnt < real_children_number) {
+			  dbg_print("Waiting config ack\r\n");
         node_radio_get_config_ack(&config_ack);
+			  dbg_print("Checking config acknowledge\r\n");
         for (i = 0; i < config_data.children_number; i++) {
             if (probe_table[i]) {
                 if (config_data.children[i].id == config_ack.from) {
@@ -191,12 +204,15 @@ void node_get_config_ack() {
             }
         }
     }
+		dbg_print("Got config acknowledge... %d\r\n", max_start_number);
     config_ack.from = this.id;
     config_ack.successfully_configured = successfully_configured;
     config_ack.highest_start_number = max_start_number;
+		config_data.highest_start_number = max_start_number;
 }
 
 void node_set_config_ack() {
+		dbg_print("Propagating config ack\r\n");
     node_radio_set_config_ack(&parent, &config_ack);
 }
 
@@ -210,15 +226,20 @@ void node_ammend_parent() {
 }
 
 void node_wait_for_start() {
+	  dbg_print("Wait start from parent\r\n");
     node_radio_get_start_beacon(&parent, &config_data);
+	  dbg_print("Got start from parent\r\n");
 }
 
 void node_propagate_start() {
     int i;
     for (i = 0; i < config_data.children_number; i++) {
         if (probe_table[i]) {
-            node_radio_set_start_beacon(&this, &config_data.children[i],
-                &config_data);
+					dbg_print("Propagating start to: %d, highest start number: %d\r\n", i, 
+						config_data.highest_start_number);
+            node_radio_set_start_beacon(&this, &config_data.children[i], 
+							&config_data);
+					dbg_print("Propagating start to: %d successful!\r\n", i);
         }
     }
 }

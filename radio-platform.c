@@ -16,7 +16,7 @@ extern void timer_start(uint32_t wait_for);
 		
 
 
-node_t parent;//izbrisati kod konačne implenentacije!!
+static node_t parent;//izbrisati kod konačne implenentacije!!
 
 nrf_esb_payload_t	        probe_payload;
 uint8_t										esb_probe_status = 0xFF; //0xFF-wait for event; 0xAA-RX received; 0xEE-TX failed of TX success
@@ -45,7 +45,7 @@ void nrf_esb_rx_event_handler(nrf_esb_evt_t const * p_event)
         case NRF_ESB_EVENT_TX_SUCCESS:
 
 						//nrf_esb_write_payload(&tx_payload);
-						//					dbg_print("tx_SUCC!\r\n");
+											dbg_print("tx_SUCC!\r\n");
             break;
         case NRF_ESB_EVENT_TX_FAILED:
             (void) nrf_esb_flush_tx();
@@ -57,14 +57,17 @@ void nrf_esb_rx_event_handler(nrf_esb_evt_t const * p_event)
 						if(nrf_esb_read_rx_payload(&rx_payload) == NRF_SUCCESS)
             {								
 								if ((rx_payload.length > 0) && (rx_payload.rssi > CONFIG_RSSI_MIN)){
-									i=-1;
+									i=0;
 									j=-1;
-									i = memcmp(rx_payload.data, &parent.id,4);
+									#ifndef	NODE_GATEWAY
+									//i = memcmp(rx_payload.data, &parent.id,4);
+									#endif
 									j = memcmp(&rx_payload.data[rx_payload.length-4], config_ack_magic, 4);
 									k = memcmp(&rx_payload.data[rx_payload.length-4], data_magic, 4);
 									l = memcmp(&rx_payload.data[rx_payload.length-4], data_end_magic, 4);
-								//	dbg_print("i: %d j: %d k: %d l: %d\r\n", i, j, k, l);
-								//	dbg_print("RX: %X-%X-%X-%X PAR: %X\r\n",rx_payload.data[0], rx_payload.data[1], rx_payload.data[2], rx_payload.data[3], parent.id );
+									dbg_print("GOT_STH\r\n");
+									dbg_print("i: %d j: %d k: %d l: %d\r\n", i, j, k, l);
+									dbg_print("RX: %X-%X-%X-%X PAR: %X\r\n",rx_payload.data[0], rx_payload.data[1], rx_payload.data[2], rx_payload.data[3], parent.id );
 									if(i == 0){
 										if(j==0){
 											esb_rx_status = 0xAA;		
@@ -323,6 +326,7 @@ void sleep_for(unsigned int ncount){//treba prmijenit da bude upravljan sa timer
 		while(!timer_done) __WFI();	
 		NRF_TIMER0->TASKS_SHUTDOWN=0x01;	
 		NVIC_DisableIRQ(TIMER0_IRQn);	
+		dbg_print("Odspavao\r\n");
 	}
 }
 
@@ -386,6 +390,8 @@ void get_config_data(node_t *from, config_data_t *data){
 		uint8_t temp[4];
 		int i;
 	
+		parent.id = from->id;
+	
 RETRY_CONFIG_RX:	ESB_Init(nrf_esb_rx_event_handler, 
 														RX_CONFIG, 
 														get_nrf_id(), 
@@ -425,6 +431,7 @@ RETRY_CONFIG_RX:	ESB_Init(nrf_esb_rx_event_handler,
 												memcpy(&data->children[i++].id, temp, 4);
 												dbg_print("A");
 											}
+											nrf_esb_stop_rx();
 										}
 										else{
 										}
@@ -492,12 +499,13 @@ void get_node_data(unsigned char *data, int* len){
 	tx_payload.length = 8;
 	
 	nrf_esb_write_payload(&tx_payload);
+	nrf_esb_write_payload(&tx_payload);
 	RingBufFlush(&rbo_esb_rx);
-
+  esb_rx_status = 0xFF;
 	nrf_esb_start_rx();
-	dbg_print("Slusam!");
 
-	RX_WAIT:		esb_rx_status = 0xFF;
+
+	RX_WAIT:		
 				while(esb_rx_status == 0xFF) __WFI();
 				nrf_esb_write_payload(&tx_payload);
 				if(esb_rx_status == 0xBB){
@@ -509,6 +517,7 @@ void get_node_data(unsigned char *data, int* len){
 					goto RX_WAIT;
 				}
 				else if(esb_rx_status == 0xCC){//recived data_end_magic
+					nrf_esb_flush_tx();
 					esb_rx_status = 0xFF;
 					used = RingBufUsed(&rbo_esb_rx);
 					RingBufRead(&rbo_esb_rx, &data[i], used);
@@ -516,7 +525,10 @@ void get_node_data(unsigned char *data, int* len){
 					nrf_esb_stop_rx();
 					dbg_print("C\t");
 				}
-				else goto RX_WAIT;
+				else{
+					//dbg_print("Error_GO_WAIT");
+					goto RX_WAIT;
+				}
 }
 
 void set_node_data(node_t *to, unsigned char *data, int len){
@@ -531,18 +543,18 @@ void set_node_data(node_t *to, unsigned char *data, int len){
 					DATA_PREFIX, 
 					ESB_CONFIG_CH);
 
-	len = len - 4; //skrati za id
+	
 	id=get_nrf_id();
 	memcpy(tx_payload.data, &id, 4);
 	for(cnt=0;cnt<len;){
 		if((len - cnt) <= 24 ){ //data fits in one packet
-			memcpy(&tx_payload.data[4], &data[cnt+4], (len-cnt));
+			memcpy(&tx_payload.data[4], &data[cnt], (len-cnt));
 			memcpy(&tx_payload.data[4+(len-cnt)], data_end_magic, 4);
 			tx_payload.length =  8 + (len-cnt);
 			cnt = len;			
 		}
 		else{
-			memcpy(&tx_payload.data[4], &data[cnt+4], 24);
+			memcpy(&tx_payload.data[4], &data[cnt], 24);
 			memcpy(&tx_payload.data[28], data_magic, 4);
 			cnt = cnt + 24;
 			tx_payload.length =  32;
@@ -550,11 +562,10 @@ void set_node_data(node_t *to, unsigned char *data, int len){
 		DATA_SEND_RTRY:		
 							esb_tx_status = 0xFF;
 							nrf_esb_write_payload(&tx_payload);	
-							//dbg_print("DATA_SEND!\r\n");
 							while(esb_tx_status == 0xFF) __WFI(); 
-							//timer_delay(1000);
+							dbg_print("DATA_SEND!\r\n");
 							if(esb_tx_status != 0xBB){
-								timer_delay(100000);
+								timer_delay(1000);
 								goto DATA_SEND_RTRY;
 							}
 	}	
