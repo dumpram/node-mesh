@@ -44,6 +44,11 @@ __irq	void RTC0_IRQHandler(void){
 	NRF_RTC0->TASKS_CLEAR =0x01;
 	
 	rtc_wake_up = true;
+	if (node_status == TIMEOUT_STATUS) {
+		//dbg_print("RTC_system_reset\r\n");
+		//timer_delay(100000);
+		NVIC_SystemReset();
+	}
 	//provjeri node_status, ako je ok, radi dalje, inace reset
 	
 	NRF_RTC0->EVENTS_COMPARE[0] = 0x00;
@@ -69,10 +74,10 @@ int main(void){
 	
 //	bool temp_bool = false;
 //	probe_t			incoming_probe;
-	node_t			temp_node;
-	int	temp_cnt=0;
-	int i, temp_data;
-	unsigned char temp_buff[100];
+	//node_t			temp_node;
+	//int	temp_cnt=0;
+	//int i, temp_data;
+	//unsigned char temp_buff[100];
 	
 	clocks_start();	
 	RingBufInit(&rbo_uart, uart_rx_buf, UART_TX_BUF_SIZE);

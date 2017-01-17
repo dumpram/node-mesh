@@ -150,9 +150,25 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>68</LineNumber>
+          <LineNumber>191</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>7512</Address>
+          <Address>7438</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\node.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\nrf_mesh_api\node.c\191</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>73</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>7060</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -161,7 +177,23 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>.\main_mesh_V2.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\nrf_mesh_api\main_mesh_V2.c\68</Expression>
+          <Expression>\\nrf_mesh_api\main_mesh_V2.c\73</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>193</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>0</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>0</BreakIfRCount>
+          <Filename>.\node.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression></Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>

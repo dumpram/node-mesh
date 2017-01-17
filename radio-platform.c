@@ -16,7 +16,7 @@ extern void timer_start(uint32_t wait_for);
 		
 
 
-static node_t parent;//izbrisati kod konačne implenentacije!!
+static node_t parent;//izbrisati kod konacne implenentacije!!
 
 nrf_esb_payload_t	        probe_payload;
 uint8_t										esb_probe_status = 0xFF; //0xFF-wait for event; 0xAA-RX received; 0xEE-TX failed of TX success
@@ -57,19 +57,19 @@ void nrf_esb_rx_event_handler(nrf_esb_evt_t const * p_event)
 						if(nrf_esb_read_rx_payload(&rx_payload) == NRF_SUCCESS)
             {								
 								if ((rx_payload.length > 0) && (rx_payload.rssi > CONFIG_RSSI_MIN)){
-									i=0;
-									j=-1;
+									//i=0;
+									//j=-1;
 									#ifndef	NODE_GATEWAY
-									//i = memcmp(rx_payload.data, &parent.id,4);
+									i = memcmp(rx_payload.data, &parent.id,4);
 									#endif
 									j = memcmp(&rx_payload.data[rx_payload.length-4], config_ack_magic, 4);
 									k = memcmp(&rx_payload.data[rx_payload.length-4], data_magic, 4);
 									l = memcmp(&rx_payload.data[rx_payload.length-4], data_end_magic, 4);
-									dbg_print("GOT_STH\r\n");
-									dbg_print("i: %d j: %d k: %d l: %d\r\n", i, j, k, l);
-									dbg_print("RX: %X-%X-%X-%X PAR: %X\r\n",rx_payload.data[0], rx_payload.data[1], rx_payload.data[2], rx_payload.data[3], parent.id );
-									if(i == 0){
-										if(j==0){
+									//dbg_print("GOT_STH\r\n");
+									//dbg_print("i: %d j: %d k: %d l: %d\r\n", i, j, k, l);
+									//dbg_print("RX: %X-%X-%X-%X PAR: %X\r\n",rx_payload.data[0], rx_payload.data[1], rx_payload.data[2], rx_payload.data[3], parent.id );
+								//	if(i == 0){
+										if((j==0) && (i==0)){
 											esb_rx_status = 0xAA;		
 											//dbg_print("GOT: %d", rx_payload.length);										
 											RingBufWrite(&rbo_esb_rx, &rx_payload.data[4], (rx_payload.length-8));
@@ -82,7 +82,7 @@ void nrf_esb_rx_event_handler(nrf_esb_evt_t const * p_event)
 											esb_rx_status = 0xCC;
 											RingBufWrite(&rbo_esb_rx, rx_payload.data, rx_payload.length);
 										}
-									}
+								//	}
 									else	esb_rx_status = 0xEE;
 										
 								}
@@ -111,7 +111,7 @@ void nrf_esb_tx_event_handler(nrf_esb_evt_t const * p_event)
             break;
         case NRF_ESB_EVENT_RX_RECEIVED:
 						if(nrf_esb_read_rx_payload(&rx_payload) == NRF_SUCCESS)
-							{		dbg_print("TX_recived len: %d\r\n", rx_payload.length);
+							{		//dbg_print("TX_recived len: %d\r\n", rx_payload.length);
 								if ((rx_payload.length > 0) && (rx_payload.rssi > CONFIG_RSSI_MIN)){
 									i=-1;
 									j=-1;
@@ -175,10 +175,10 @@ void nrf_esb_get_probed_event_handler(nrf_esb_evt_t const * p_event){
     switch (p_event->evt_id)
     {
         case NRF_ESB_EVENT_TX_SUCCESS:
-						(void) nrf_esb_flush_tx();
+					//	(void) nrf_esb_flush_tx();
             break;
         case NRF_ESB_EVENT_TX_FAILED:
-            (void) nrf_esb_flush_tx();
+          //  (void) nrf_esb_flush_tx();
             break;
         case NRF_ESB_EVENT_RX_RECEIVED:
 
@@ -194,8 +194,11 @@ void nrf_esb_get_probed_event_handler(nrf_esb_evt_t const * p_event){
 										global_temp_probe.rssi = rx_payload.rssi;
 										esb_probe_status = 0xAA;
 									}
+									else esb_probe_status = 0xEE;
                 }
+								else esb_probe_status = 0xEE;
             }
+						else esb_probe_status = 0xEE;
 
 
             break;
@@ -258,7 +261,7 @@ bool probe(unsigned int id){//isprobano
 	ESB_Init(nrf_esb_probe_event_handler, 
 					PROBE_CONFIG, 
 					id, 
-					PROBE_PREFIX, 
+					(id&0x000000FF), 
 					ESB_PROBE_CH);
 	
 	UINT32_TO_UINT8_ARRAY(probe_payload.data,get_nrf_id());//add id data to payload
@@ -281,7 +284,7 @@ bool probe(unsigned int id){//isprobano
 
 void get_probed(probe_t *out){//isprobano
 	
-	ESB_Init(nrf_esb_get_probed_event_handler, GET_PROBED_CONFIG, get_nrf_id(), PROBE_PREFIX, ESB_PROBE_CH);
+	ESB_Init(nrf_esb_get_probed_event_handler, GET_PROBED_CONFIG, get_nrf_id(), (get_nrf_id())&0x000000FF, ESB_PROBE_CH);
 	
 	UINT32_TO_UINT8_ARRAY(probe_payload.data,get_nrf_id());//add id data to payload
 	probe_payload.data[4] = PROBE_M0;
@@ -292,22 +295,22 @@ void get_probed(probe_t *out){//isprobano
 	probe_payload.pipe		=	0;	
 	nrf_esb_write_payload(&probe_payload);
 	
-	esb_probe_status = 0xFF;
-	nrf_esb_start_rx();
-	
-	while(esb_probe_status == 0xFF) __WFI();
-	nrf_esb_stop_rx();	
-	
-	if(esb_probe_status == 0xAA) {
-		uint32_t irq_masked = __disable_irq();
-			out->parent_id = global_temp_probe.parent_id;
-			out->rssi = global_temp_probe.rssi;
-		if(!irq_masked)	__enable_irq();		
-	}
-	
-	while(!nrf_esb_is_idle());
-	nrf_esb_disable();
-
+	PROBE_RTRY:	esb_probe_status = 0xFF;
+							nrf_esb_start_rx();
+							
+							while(esb_probe_status == 0xFF) __WFI();
+							nrf_esb_stop_rx();	
+							
+							if(esb_probe_status == 0xAA) {
+								uint32_t irq_masked = __disable_irq();
+									out->parent_id = global_temp_probe.parent_id;
+									out->rssi = global_temp_probe.rssi;
+								if(!irq_masked)	__enable_irq();		
+							}
+							else goto PROBE_RTRY;
+							
+							while(!nrf_esb_is_idle());
+							nrf_esb_disable();
 }
 
 
@@ -326,7 +329,7 @@ void sleep_for(unsigned int ncount){//treba prmijenit da bude upravljan sa timer
 		while(!timer_done) __WFI();	
 		NRF_TIMER0->TASKS_SHUTDOWN=0x01;	
 		NVIC_DisableIRQ(TIMER0_IRQn);	
-		dbg_print("Odspavao\r\n");
+		dbg_print("Slept for MINISLICE!\r\n");
 	}
 }
 
@@ -338,7 +341,7 @@ void set_config_data(node_t *to, config_data_t *config_data){
 	ESB_Init(nrf_esb_tx_event_handler, 
 					TX_CONFIG, 
 					to->id, 
-					PROBE_PREFIX, 
+					(to->id)&0x000000FF, 
 					ESB_CONFIG_CH);
 	id = get_nrf_id();
 	UINT32_TO_UINT8_ARRAY(tx_payload.data, id);
@@ -352,11 +355,9 @@ void set_config_data(node_t *to, config_data_t *config_data){
 	nrf_esb_write_payload(&tx_payload);	
 	
 	while(esb_tx_status == 0xFF) __WFI();
-	dbg_print("Poslano!\r\n");
 	
 	
 	for(i=0;i<config_data->children_number;){
-		dbg_print("ch-i: %d\r\n",(config_data->children_number - i));
 		if((config_data->children_number - i) < 6){
 			UINT32_TO_UINT8_ARRAY(tx_payload.data, id);
 			for(j=0; j< config_data->children_number; j++){
@@ -395,7 +396,7 @@ void get_config_data(node_t *from, config_data_t *data){
 RETRY_CONFIG_RX:	ESB_Init(nrf_esb_rx_event_handler, 
 														RX_CONFIG, 
 														get_nrf_id(), 
-														PROBE_PREFIX, 
+														(get_nrf_id())&0x000000FF, 
 														ESB_CONFIG_CH);
 										
 										UINT32_TO_UINT8_ARRAY(probe_payload.data,get_nrf_id());
@@ -429,7 +430,7 @@ RETRY_CONFIG_RX:	ESB_Init(nrf_esb_rx_event_handler,
 												while(RingBufEmpty(&rbo_esb_rx)) __WFI();
 												RingBufRead(&rbo_esb_rx, temp, 4);
 												memcpy(&data->children[i++].id, temp, 4);
-												dbg_print("A");
+												//dbg_print("A");
 											}
 											nrf_esb_stop_rx();
 										}
@@ -491,7 +492,7 @@ void get_node_data(unsigned char *data, int* len){
 	ESB_Init(nrf_esb_rx_event_handler, 
 					RX_CONFIG, 
 					get_nrf_id(), 
-					DATA_PREFIX, 
+					(get_nrf_id())&0x000000FF, 
 					ESB_CONFIG_CH);
 	
 	UINT32_TO_UINT8_ARRAY(tx_payload.data,get_nrf_id());
@@ -513,7 +514,7 @@ void get_node_data(unsigned char *data, int* len){
 					used = RingBufUsed(&rbo_esb_rx);
 					RingBufRead(&rbo_esb_rx, &data[i], used);
 					i = i+used;
-					dbg_print("B\t");
+					//dbg_print("B\t");
 					goto RX_WAIT;
 				}
 				else if(esb_rx_status == 0xCC){//recived data_end_magic
@@ -523,7 +524,7 @@ void get_node_data(unsigned char *data, int* len){
 					RingBufRead(&rbo_esb_rx, &data[i], used);
 					*len = i+used;
 					nrf_esb_stop_rx();
-					dbg_print("C\t");
+					//dbg_print("C\t");
 				}
 				else{
 					//dbg_print("Error_GO_WAIT");
@@ -540,10 +541,10 @@ void set_node_data(node_t *to, unsigned char *data, int len){
 		ESB_Init(nrf_esb_tx_event_handler, 
 					TX_CONFIG, 
 					to->id, 
-					DATA_PREFIX, 
+					(to->id)&0x000000FF, 
 					ESB_CONFIG_CH);
 
-	
+	timer_delay(get_nrf_id()&0x00007FFF);//randomize send time
 	id=get_nrf_id();
 	memcpy(tx_payload.data, &id, 4);
 	for(cnt=0;cnt<len;){
@@ -563,9 +564,8 @@ void set_node_data(node_t *to, unsigned char *data, int len){
 							esb_tx_status = 0xFF;
 							nrf_esb_write_payload(&tx_payload);	
 							while(esb_tx_status == 0xFF) __WFI(); 
-							dbg_print("DATA_SEND!\r\n");
 							if(esb_tx_status != 0xBB){
-								timer_delay(1000);
+								timer_delay(100000);
 								goto DATA_SEND_RTRY;
 							}
 	}	

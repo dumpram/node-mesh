@@ -6,7 +6,7 @@
 
 #define SET_CONFIG_ACK_RETRY_MAX 100
 
-#define NODE_GATEWAY
+//#define NODE_GATEWAY
 
 typedef struct node_t {
     int start_number;

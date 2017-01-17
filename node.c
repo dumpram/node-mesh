@@ -101,6 +101,7 @@ void node_configuration() {
 
 void node_wait_data() {
     int i, sleep_acc = 0, next_sleep, current_start_number;
+	int new_data;
     // add my data
     node_data.packets[node_data.data_length++].data = get_my_packet_data();
 		for (i = config_data.children_number - 1; i >= 0; i--) {
@@ -113,6 +114,7 @@ void node_wait_data() {
             sleep_acc += next_sleep;
             // data retrieval
             node_radio_get_data(&config_data.children[i], &temp_data);
+						//dbg_print("ID: %X, Temperature: %d", config_data.children[i].id, temp_data.packets[i]);
             // data_appending
             node_add_data();
         }
@@ -128,6 +130,7 @@ void node_propagate_config_data() {
     int i, start_number_cnt = 0;
     for (i = 0; i < config_data.children_number; i++) {
         probe_table[i] = probe(config_data.children[i].id);
+				timer_delay(10000);
 				if (probe_table[i]) {
 					dbg_print("Probe successful\r\n");
 				}
@@ -186,12 +189,12 @@ void node_get_config_ack() {
     int real_children_number =
         config_data.children_number - temp_config_data.children_number;
     int config_ack_cnt = 0;
-    while (config_ack_cnt < real_children_number) {
+    while (config_ack_cnt != real_children_number) {//stavio != umjesto <
 			  dbg_print("Waiting config ack\r\n");
         node_radio_get_config_ack(&config_ack);
-			  dbg_print("Checking config acknowledge\r\n");
+			  
         for (i = 0; i < config_data.children_number; i++) {
-            if (probe_table[i]) {
+            if (probe_table[i]) {dbg_print("Checking config acknowledge\r\n");
                 if (config_data.children[i].id == config_ack.from) {
                     if (config_ack.highest_start_number > max_start_number) {
                         max_start_number = config_ack.highest_start_number;

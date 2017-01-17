@@ -39,8 +39,11 @@ void node_radio_set_data(node_t *to, node_t *from, node_data_t *data) {
 
 void node_radio_get_data(node_t *from, node_data_t *data) {
     int cnt = 0, i = 0, len;
+		int new_data;
     // here is retrieval of data
     get_node_data(input_buffer, &len);
+	//memcpy(&new_data, input_buffer, 4);
+	//dbg_print("ID: %X Temperature: %d\r\n", from->id, new_data);
     byte_array_to_int(input_buffer, &cnt, &i);
     from->id = i;
     byte_array_to_int(input_buffer, &cnt, &i);
